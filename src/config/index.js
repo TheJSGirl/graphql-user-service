@@ -13,6 +13,12 @@ const {
     DB_NAME
 } = process.env;
 
+let credentials = '';
+
+if(DB_USER && DB_PASSWORD) {
+    credentials = `${DB_USER}:${encodeURIComponent(DB_PASSWORD)}@`;
+}
+
 const BasicConfiguration  = {
     App:{
         NAME: APP_NAME || 'sample-service',
@@ -25,8 +31,7 @@ const BasicConfiguration  = {
         ExpiresIn: JWT_EXP || '1d',
     },
     MongoDBSettings: {
-        url: `${DB_PROTOCOL}://${DB_USER}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
-        host: DB_HOST || 'mongodb://localhost/bbd-auth-bak'
+        url: `${DB_PROTOCOL}://${credentials}${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
     },
     HashSettings: {
         SaltRounds: 3,
