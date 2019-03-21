@@ -5,10 +5,10 @@ const cors = require('cors');
 const { App } = require('./../../config');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const { responseParser }= require('./format');
-const isProd = App.env === 'production';
-const isDev = App.env === 'development';
+const isProd = App.ENV === 'production';
+const isDev = App.ENV === 'development';
 
-const logger = log({ console: true, file: false, label: App.NAME });
+const logger = log({ console: isDev, file: isProd, label: App.NAME });
 
 module.exports = async(app) => {
     
