@@ -5,12 +5,13 @@ const {
     SRV_HOST,
     JWT_ALGORITHM,
     JWT_EXP,
+    JWT_SECRET,
     DB_PROTOCOL,
     DB_USER,
     DB_PASSWORD,
     DB_HOST,
     DB_PORT,
-    DB_NAME
+    DB_NAME,
 } = process.env;
 
 let credentials = '';
@@ -36,6 +37,11 @@ const BasicConfiguration  = {
     },
     HashSettings: {
         SaltRounds: 3,
+    },
+    jwt: {
+        jwt_sceret: JWT_SECRET, 
+        jwt_exp: JWT_EXP
+    
     }
 };
 

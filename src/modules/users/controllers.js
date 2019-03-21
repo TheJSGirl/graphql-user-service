@@ -1,11 +1,8 @@
 const User = require('./models');
 const bcrypt = require('bcrypt');
-const {HashSettings} = require('../../config');
+const {HashSettings, jwt} = require('../../config');
+const jwtToken = require('jsonwebtoken');
 
-
-async function get(req, res){
-    console.log('hello')
-}
 
 async function registerUser(req, res) {
 
@@ -26,7 +23,34 @@ async function registerUser(req, res) {
     res.status(200).json(req.body);
 }
 
+async function loginUser(req, res) {
+    const {username, password} = req.body;
+
+    const userFromDb = await User.find({username});
+
+    if(!userFromDb) {
+        return;
+    }
+    const passwordFromDb = userFromDb[0].password;
+
+    const isValid = await bcrypt.compare(password, passwordFromDb);
+
+    if(!isValid) {
+        return;
+    }
+       const tokenData = {
+           id: userFromDb[0]._id,
+           username: userFromDb[0].username,
+       }
+       const token = jwtToken.sign(tokenData,
+        jwt.jwt_sceret, { expiresIn: jwt.jwt_exp },
+      );
+
+      res.header('x-auth', token);
+      return res.status(200).json(token);
+}
+
 module.exports = {
-    get,
-    registerUser
+    registerUser,
+    loginUser
 }
