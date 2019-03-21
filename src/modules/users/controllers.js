@@ -1,6 +1,6 @@
 const User = require('./models');
 const bcrypt = require('bcrypt');
-//const validateUser = require('./validation');
+const {HashSettings} = require('../../config');
 
 
 async function get(req, res){
@@ -11,18 +11,18 @@ async function registerUser(req, res) {
 
     const {name, password, email, mobile, username, image } = req.body
 
-    // const hashedPassword = await bcrypt.hashSync(password);
+    const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
     const data = {
         name,
-        password,
+        password: hashedPassword,
         email,
         mobile,
         username,
         image
     }
 
-    const userCredentials = new User(data);
-    // userCredentials.save();
+    const user = new User(data);
+    await user.save();
     res.status(200).json(req.body);
 }
 
