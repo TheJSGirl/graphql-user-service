@@ -31,7 +31,8 @@ const BasicConfiguration  = {
         ExpiresIn: JWT_EXP || '1d',
     },
     MongoDBSettings: {
-        url: `${DB_PROTOCOL}://${credentials}${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
+        url: `${DB_PROTOCOL}://${DB_USER}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
+        host: DB_HOST || 'mongodb://localhost/user-service'
     },
     HashSettings: {
         SaltRounds: 3,
