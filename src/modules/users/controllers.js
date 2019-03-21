@@ -11,10 +11,10 @@ async function registerUser(req, res) {
 
     const {name, password, email, mobile, username, image } = req.body
 
-    const hashedPassword = await bcrypt.hashSync(password);
+    // const hashedPassword = await bcrypt.hashSync(password);
     const data = {
         name,
-        password: hashedPassword,
+        password,
         email,
         mobile,
         username,
@@ -22,7 +22,7 @@ async function registerUser(req, res) {
     }
 
     const userCredentials = new User(data);
-    userCredentials.save();
+    // userCredentials.save();
     res.status(200).json(req.body);
 }
 
