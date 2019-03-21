@@ -1,18 +1,19 @@
-const express = require("express");
 require('dotenv').config();
-const mainRoutes = require('./src/modules/index');
-const app = express();
-const morgan = require('morgan');
+const express = require("express");
 const bodyParser = require('body-parser');
-const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-const logger = log({ console:true, file: false });
 const validation = require('express-validation');
+const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
+const mainRoutes = require('./src/modules/index');
+const { App } = require('./src/config');
+const app = express();
+const logger = log({ console:true, file: false, label: App.NAME });
+
+
 app.use(bodyParser.json());
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 mainRoutes(app);
 app.use((err, req, res, next) => {
-    console.log(err)
     if (err instanceof validation.ValidationError) {
         if (!err.message) {
             res.status(400).send()
@@ -39,11 +40,9 @@ app.use((err, req, res, next) => {
     }
 });
 
-app.get('/', (req, res) => {
-    console.log("here");
-    res.send('ok')
-})  
-
-app.listen(3000, (req, res) => {
-    console.log(`listing at port 3000`)
+app.listen(App.PORT, App.HOST, (e) => {
+    if(e) {
+     logger.error(e.message);
+    }
+    logger.info(`${App.NAME} running on ${App.HOST}:${App.PORT}`);
 })
