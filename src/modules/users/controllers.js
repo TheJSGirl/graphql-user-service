@@ -11,11 +11,7 @@ async function registerUser(req, res) {
 
     const {name, password, email, mobile, username, image } = req.body
 
-<<<<<<< Updated upstream
     const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
-=======
-    const hashedPassword = await bcrypt.hashSync(password, 10);
->>>>>>> Stashed changes
     const data = {
         name,
         password: hashedPassword,
