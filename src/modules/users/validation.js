@@ -11,7 +11,7 @@ module.exports = {
     },
     signin: {
         body: {
-            username: Joi.string().min(4).max(10).required(),
+            email: Joi.string().email().required(),
             password: Joi.string().min(4).max(10).required()
         }
     }
