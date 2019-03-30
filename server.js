@@ -5,6 +5,7 @@ const { App } = require('./src/config');
 const { middleware, database } = require('./src/lib');
 const app = express();
 const schema = require('./src/modules/users/schema');
+const graphqlHTTP = require('express-graphql');
 
 middleware(app);
 mainRoutes(app);
