@@ -1,14 +1,19 @@
 const graphql = require('graphql');
 const User = require('./models');
 
-const { GraphQLObjectType, GraphQLString } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql;
 
 const UserType = new GraphQLObjectType({
     name: 'User',
-    password: GraphQLString,
-    userName: GraphQLString,
-    mobile: GraphQLString,
-    email: GraphQLString
+    fields: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        password: { type: GraphQLString },
+        userName: { type: GraphQLString },
+        mobile: { type: GraphQLString },
+        email: { type: GraphQLString },
+        image: { type: GraphQLString }
+    }
 });
 
 

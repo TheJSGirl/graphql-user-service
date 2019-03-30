@@ -4,7 +4,7 @@ const mainRoutes = require('./src/modules/index');
 const { App } = require('./src/config');
 const { middleware, database } = require('./src/lib');
 const app = express();
-const schema = require('./src/modules/users/schema');
+const {gqlSchema} = require('./src/modules/graphql');
 const graphqlHTTP = require('express-graphql');
 
 middleware(app);
@@ -12,7 +12,7 @@ mainRoutes(app);
 database.connect();
 
 app.use('/graphql', graphqlHTTP({
-    schema,
+    schema: gqlSchema,
     graphiql: true
 }));
 
