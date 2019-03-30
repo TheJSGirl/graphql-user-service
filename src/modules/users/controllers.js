@@ -26,7 +26,8 @@ async function registerUser(req, res) {
 async function loginUser(req, res) {
     const { email, password} = req.body;
 
-    const userFromDb = await User.find({email});
+    let userFromDb = await User.find({email});
+    
 
     if(!userFromDb) {
         return;
@@ -45,9 +46,12 @@ async function loginUser(req, res) {
        const token = jwtToken.sign(tokenData,
         jwt.jwt_sceret, { expiresIn: jwt.jwt_exp },
       );
-
-      res.header('x-auth', token);
-      return res.status(200).json({ user: userFromDb, token});
+    
+    let user = userFromDb.toObject();
+    delete user.password;
+    
+    res.header('Authorization', `Bearer ${token}`);
+    return res.status(200).json({ user: userFromDb });
 }
 
 module.exports = {
