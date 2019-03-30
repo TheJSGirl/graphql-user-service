@@ -1,4 +1,4 @@
-const schema = require('../users/schema'); 
+const {UserType} = require('../users/schema'); 
 const { GraphQLObjectType, GraphQLID, GraphQLList } = graphql;
 
 const RootQuery = new GraphQLObjectType({
