@@ -5,12 +5,13 @@ const {
     SRV_HOST,
     JWT_ALGORITHM,
     JWT_EXP,
+    JWT_SECRET,
     DB_PROTOCOL,
     DB_USER,
     DB_PASSWORD,
     DB_HOST,
     DB_PORT,
-    DB_NAME
+    DB_NAME,
 } = process.env;
 
 let credentials = '';
@@ -31,10 +32,23 @@ const BasicConfiguration  = {
         ExpiresIn: JWT_EXP || '1d',
     },
     MongoDBSettings: {
+<<<<<<< HEAD
         url: `${DB_PROTOCOL}://${credentials}${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
     },
     HashSettings: {
         SaltRounds: 3,
+=======
+        url: `${DB_PROTOCOL}://${DB_USER}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}` || 'mongodb://localhost/bbd-auth-bak',
+        host: DB_HOST || 'mongodb://localhost/user-service'
+    },
+    HashSettings: {
+        SaltRounds: 3,
+    },
+    jwt: {
+        jwt_sceret: JWT_SECRET, 
+        jwt_exp: JWT_EXP
+    
+>>>>>>> 3c6dfff4f0c15877006745924ae806ac9fc08313
     }
 };
 

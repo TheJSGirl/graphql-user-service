@@ -3,8 +3,21 @@ const bcrypt = require('bcrypt');
 //const validateUser = require('./validation');
 
 
-async function get(req, res){
-    console.log('hello')
+async function registerUser(args) {
+
+    const {name, password, email, mobile, username, image } = args;
+
+    const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
+    const data = {
+        name,
+        password: hashedPassword,
+        email,
+        mobile,
+        username,
+        image
+    };
+    const res = await User.create(data);
+    return res.toJSON();    
 }
 
 async function registerUser(req, res) {
@@ -27,6 +40,6 @@ async function registerUser(req, res) {
 }
 
 module.exports = {
-    get,
-    registerUser
+    registerUser,
+    loginUser
 }
