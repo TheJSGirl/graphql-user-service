@@ -16,8 +16,16 @@ const UserType = new GraphQLObjectType({
     }
 });
 
+const UserReturnType = new GraphQLObjectType({
+    name: 'UserReturn',
+    fields: {
+       user: { type: UserType },
+       token : { type: GraphQLString }
+    }
+})
 
 
 module.exports = {
-    UserType
+    UserType,
+    UserReturnType
 }

@@ -7,8 +7,8 @@ const app = express();
 const {gqlSchema} = require('./src/modules/graphql');
 const graphqlHTTP = require('express-graphql');
 
-middleware(app);
-mainRoutes(app);
+//middleware(app);
+//mainRoutes(app);
 database.connect();
 
 app.use('/graphql', graphqlHTTP({
