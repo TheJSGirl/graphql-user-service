@@ -4,9 +4,9 @@ const {HashSettings, jwt} = require('../../config');
 const jwtToken = require('jsonwebtoken');
 
 
-async function registerUser(req, res) {
+async function registerUser(args) {
 
-    const {name, password, email, mobile, username, image } = req.body;
+    const {name, password, email, mobile, username, image } = args;
 
     const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
     const data = {
@@ -17,10 +17,8 @@ async function registerUser(req, res) {
         username,
         image
     };
-
-    const user = new User(data);
-    await user.save();
-    res.status(200).json(req.body);
+    const res = await User.create(data);
+    return res.toJSON();    
 }
 
 async function loginUser(req, res) {

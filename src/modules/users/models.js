@@ -28,6 +28,17 @@ const userSchema = new Schema({
     },
 }, { strict: true, timestamps: true });
 
-
+userSchema.methods = {
+    toJSON() {
+        return {
+            id: this._id,
+            name: this.name,
+            email: this.email,
+            mobile: this.mobile,
+            image: this.image,
+            userName: this.userName
+        }
+    }
+}
 
 module.exports = mongoose.model('User', userSchema);

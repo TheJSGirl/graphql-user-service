@@ -1,11 +1,9 @@
 const User = require('./models');
+const {registerUser} = require('./controllers');
 
 async function addUser(args) {
-    let user = new User({
-        name: args.name
-    })
     
-    return user.save();
+    return registerUser(args)
 }
 
 module.exports = {
