@@ -6,7 +6,7 @@ const userSchema = new Schema({
 
     name: {
         type: String,
-        trime: true
+        trim: true
     },
     password: {
         type: String,
@@ -20,12 +20,25 @@ const userSchema = new Schema({
         type: String,
     },
     mobile: {
-        type: Number,
+        type: String,
     },
     email: {
         type: String,
         trim: true
     },
 }, { strict: true, timestamps: true });
+
+userSchema.methods = {
+    toJSON() {
+        return {
+            id: this._id,
+            name: this.name,
+            email: this.email,
+            mobile: this.mobile,
+            image: this.image,
+            userName: this.userName
+        }
+    }
+}
 
 module.exports = mongoose.model('User', userSchema);

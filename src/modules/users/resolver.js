@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const {HashSettings, jwt} = require('../../config');
 const jwtToken = require('jsonwebtoken');
 
+async function addUser(args) {
+
+    return registerUser(args)
+}
 
 async function registerUser(args) {
 
@@ -21,16 +25,14 @@ async function registerUser(args) {
     return res.toJSON();    
 }
 
-async function loginUser(req, res) {
-    const { email, password} = req.body;
-
-    let userFromDb = await User.find({email});
-    
+async function loginUser(args) {
+    const { email, password} = args;
+    let userFromDb = await User.findOne({email});
 
     if(!userFromDb) {
         return;
     }
-    const passwordFromDb = userFromDb[0].password;
+    const passwordFromDb = userFromDb.password;
 
     const isValid = await bcrypt.compare(password, passwordFromDb);
 
@@ -38,21 +40,20 @@ async function loginUser(req, res) {
         return;
     }
        const tokenData = {
-           id: userFromDb[0]._id,
-           username: userFromDb[0].username,
+           id: userFromDb._id,
+           username: userFromDb.username,
+           email: userFromDb.email
        };
        const token = jwtToken.sign(tokenData,
         jwt.jwt_sceret, { expiresIn: jwt.jwt_exp },
       );
-    
-    let user = userFromDb.toObject();
-    delete user.password;
-    
-    res.header('Authorization', `Bearer ${token}`);
-    return res.status(200).json({ user: userFromDb });
+    return  {
+        user: userFromDb.toJSON(),
+        token
+    }
 }
-
 module.exports = {
+    addUser,
     registerUser,
     loginUser
 }
