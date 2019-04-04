@@ -8,6 +8,18 @@ async function addUser(args) {
     return registerUser(args)
 }
 
+async function fetchUser(args) {
+   try{
+    const user = await User.findOne({_id: args.id});
+    if(!user) {
+        return null;
+    }
+    return user;
+   } catch(e) {
+       return null;
+   }
+}
+
 async function registerUser(args) {
 
     const {name, password, email, mobile, username, image } = args;
@@ -55,5 +67,6 @@ async function loginUser(args) {
 module.exports = {
     addUser,
     registerUser,
-    loginUser
+    loginUser,
+    fetchUser
 }

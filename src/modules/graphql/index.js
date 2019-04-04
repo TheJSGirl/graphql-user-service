@@ -2,7 +2,7 @@ const {UserType, UserReturnType } = require('../users/schema');
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLString, GraphQLSchema, GraphQLNonNull } = graphql;
 const User = require('../users/models');
-const {addUser, loginUser } = require('../users/resolver');
+const {addUser, loginUser, fetchUser  } = require('../users/resolver');
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -11,7 +11,7 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: { id: { type: GraphQLID}},
             resolve(parent, args) {
-                return User.findById(args.id)
+                return fetchUser(args)
             }
         },
         users: {
