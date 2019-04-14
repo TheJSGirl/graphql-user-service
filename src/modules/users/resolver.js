@@ -1,14 +1,40 @@
 const User = require('./models');
 const bcrypt = require('bcrypt');
-const {HashSettings, jwt} = require('../../config');
-const jwtToken = require('jsonwebtoken');
+const config = require('../../config');
+const jwt = require('jsonwebtoken');
 
 async function addUser(args) {
 
     return registerUser(args)
 }
 
+async function checkAuth(token) {
+    const req = {};
+    if (!token && !authToken) {
+        req.authenticated = false;
+        throw new errors.UnauthorizedAccess();
+    }
+    const decoded = await jwt.verify(token, config.jwt.jwt_sceret, config.jwt.jwt_exp);
+    if (!decoded) {
+        req.authenticated = false;
+        throw new errors.UnauthorizedAccess();
+    }
+    const dbUser = await User.findOne({ _id: decoded.id });
+    const permission = {
+        admin: false,
+    };
+
+    if (dbUser && dbUser.role === 'admin') {
+        permission.admin = true;
+    }
+
+    req.authenticated = true;
+    req.user = decoded;
+    req.permission = permission;
+    return req;
+}
 async function fetchUser(args) {
+    const abc = await checkAuth(args.token);
    try{
     const user = await User.findOne({_id: args.id});
     if(!user) {
@@ -21,10 +47,10 @@ async function fetchUser(args) {
 }
 
 async function registerUser(args) {
-
+    const result = await checkAuth(args.token);
     const {name, password, email, mobile, username, image } = args;
 
-    const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
+    const hashedPassword = await bcrypt.hashSync(password, config.HashSettings.SaltRounds);
     const data = {
         name,
         password: hashedPassword,
@@ -57,7 +83,7 @@ async function loginUser(args) {
            email: userFromDb.email
        };
        const token = jwtToken.sign(tokenData,
-        jwt.jwt_sceret, { expiresIn: jwt.jwt_exp },
+        config.jwt.jwt_sceret, { expiresIn: config.jwt.jwt_exp },
       );
     return  {
         user: userFromDb.toJSON(),
@@ -68,5 +94,6 @@ module.exports = {
     addUser,
     registerUser,
     loginUser,
-    fetchUser
+    fetchUser,
+    checkAuth
 }

@@ -2,7 +2,7 @@ const {UserType, UserReturnType } = require('../users/schema');
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLString, GraphQLSchema, GraphQLNonNull } = graphql;
 const User = require('../users/models');
-const {addUser, loginUser, fetchUser  } = require('../users/resolver');
+const {addUser, loginUser, fetchUser, checkAuth  } = require('../users/resolver');
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -34,7 +34,9 @@ const Mutations = new GraphQLObjectType({
             password: { type: GraphQLString },
             userName: { type: GraphQLString },
             mobile: { type: GraphQLString },
-            email: { type: GraphQLString }
+            email: { type: GraphQLString },
+            token: { type: GraphQLString}
+
         },
         resolve: (parent, args) => addUser(args)
     },
@@ -46,7 +48,17 @@ const Mutations = new GraphQLObjectType({
             password: { type: GraphQLString }
         },
         resolve: (parent, args) => loginUser(args)
+    },
+
+    checkAuth: {
+        type: UserType,
+        args: {
+                token: {type: GraphQLString},
+                email: {type: GraphQLString}
+        },
+        resolve: (parent, args) => checkAuth(args.token)
     }
+
 }
 
 
