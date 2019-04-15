@@ -12,12 +12,12 @@ async function checkAuth(token) {
     const req = {};
     if (!token && !authToken) {
         req.authenticated = false;
-        throw new Error('UnauthorizedAccess');
+        throw new Error('Unauthorized Access');
     }
     const decoded = await jwt.verify(token, config.jwt.jwt_sceret, config.jwt.jwt_exp);
     if (!decoded) {
         req.authenticated = false;
-        throw new Error('UnauthorizedAccess');
+        throw new Error('Unauthorized Access');
     }
     const dbUser = await User.findOne({ _id: decoded.id });
     const permission = {
