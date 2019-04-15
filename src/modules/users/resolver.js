@@ -34,7 +34,6 @@ async function checkAuth(token) {
     return req;
 }
 async function fetchUser(args) {
-    const abc = await checkAuth(args.token);
    try{
     const user = await User.findOne({_id: args.id});
     if(!user) {
@@ -82,7 +81,7 @@ async function loginUser(args) {
            username: userFromDb.username,
            email: userFromDb.email
        };
-       const token = jwtToken.sign(tokenData,
+       const token = jwt.sign(tokenData,
         config.jwt.jwt_sceret, { expiresIn: config.jwt.jwt_exp },
       );
     return  {
