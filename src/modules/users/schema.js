@@ -24,8 +24,33 @@ const UserReturnType = new GraphQLObjectType({
     }
 })
 
+const ResponseReturnType = new GraphQLObjectType({
+    name: 'ResponseReturnType',
+    fields: {
+      response: {
+        authenticated: GraphQLBoolean,
+        user:
+         { id: GraphQLString,
+           email: GraphQLString,
+           iat: GraphQLInt,
+           exp: GraphQLInt 
+        },
+        permission: { GraphQLObjectType } 
+      }
+     
+    }
+});
+
+const AuthReturnType = new GraphQLObjectType({
+    name: 'AuthReturn',
+    fields: {
+       response: { type: ResponseReturnType }
+    }
+})
 
 module.exports = {
     UserType,
-    UserReturnType
+    UserReturnType,
+    AuthReturnType,
+    ResponseReturnType
 }
