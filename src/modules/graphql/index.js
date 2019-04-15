@@ -1,7 +1,7 @@
-const {UserType, UserReturnType, AuthReturnType } = require('../users/schema'); 
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLString, GraphQLSchema, GraphQLNonNull } = graphql;
+const {UserType, UserReturnType, AuthReturnType } = require('../users/schema'); 
 const User = require('../users/models');
+const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLString, GraphQLSchema, GraphQLNonNull } = graphql;
 const {addUser, loginUser, fetchUser, checkAuth  } = require('../users/resolver');
 
 const RootQuery = new GraphQLObjectType({
@@ -36,7 +36,6 @@ const Mutations = new GraphQLObjectType({
             mobile: { type: GraphQLString },
             email: { type: GraphQLString },
             token: { type: GraphQLString}
-
         },
         resolve: (parent, args) => addUser(args)
     },

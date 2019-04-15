@@ -12,12 +12,12 @@ async function checkAuth(token) {
     const req = {};
     if (!token && !authToken) {
         req.authenticated = false;
-        throw new errors.UnauthorizedAccess();
+        throw new Error('UnauthorizedAccess');
     }
     const decoded = await jwt.verify(token, config.jwt.jwt_sceret, config.jwt.jwt_exp);
     if (!decoded) {
         req.authenticated = false;
-        throw new errors.UnauthorizedAccess();
+        throw new Error('UnauthorizedAccess');
     }
     const dbUser = await User.findOne({ _id: decoded.id });
     const permission = {
@@ -48,7 +48,9 @@ async function fetchUser(args) {
 async function registerUser(args) {
 
     const result = await checkAuth(args.token);
-    console.log("result-----------", result)
+    if(!result) {
+        throw new Error('You are not allowed');
+    }
     const {name, password, email, mobile, username, image } = args;
 
     const hashedPassword = await bcrypt.hashSync(password, config.HashSettings.SaltRounds);
