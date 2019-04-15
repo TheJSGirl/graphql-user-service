@@ -1,7 +1,7 @@
 const graphql = require('graphql');
 const User = require('./models');
 
-const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLBoolean} = graphql;
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -25,7 +25,25 @@ const UserReturnType = new GraphQLObjectType({
 })
 
 
+const PermissionType = new GraphQLObjectType({
+    name: 'PermissionReturn',
+    fields: {
+        admin: {
+            type: GraphQLBoolean
+        }
+    }
+})
+const AuthReturnType = new GraphQLObjectType({
+    name: 'AuthReturn',
+    fields: {
+        authenticated:{ type: GraphQLBoolean},
+        user:{ type: UserType },
+        permission: { type: PermissionType }
+    }
+})
+
 module.exports = {
     UserType,
-    UserReturnType
+    UserReturnType,
+    AuthReturnType,
 }
