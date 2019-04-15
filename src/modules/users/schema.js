@@ -25,14 +25,20 @@ const UserReturnType = new GraphQLObjectType({
 })
 
 
+const PermissionType = new GraphQLObjectType({
+    name: 'PermissionReturn',
+    fields: {
+        admin: {
+            type: GraphQLBoolean
+        }
+    }
+})
 const AuthReturnType = new GraphQLObjectType({
     name: 'AuthReturn',
     fields: {
         authenticated:{ type: GraphQLBoolean},
-        user:UserType,
-        permission: {
-            admin: {type: GraphQLBoolean}
-        }
+        user:{ type: UserType },
+        permission: { type: PermissionType }
     }
 })
 
