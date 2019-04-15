@@ -49,7 +49,7 @@ async function registerUser(args) {
 
     const result = await checkAuth(args.token);
     if(!result) {
-        throw new Error('You are not allowed');
+        throw new Error('Unauthorized Access');
     }
     const {name, password, email, mobile, username, image } = args;
 
