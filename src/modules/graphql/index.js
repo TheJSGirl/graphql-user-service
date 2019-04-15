@@ -51,10 +51,9 @@ const Mutations = new GraphQLObjectType({
     },
 
     checkAuth: {
-        type: UserType,
+        type: ResponseReturnType,
         args: {
                 token: {type: GraphQLString},
-                email: {type: GraphQLString}
         },
         resolve: (parent, args) => checkAuth(args.token)
     }
