@@ -1,4 +1,4 @@
-const {UserType, UserReturnType } = require('../users/schema'); 
+const {UserType, UserReturnType, AuthReturnType } = require('../users/schema'); 
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLString, GraphQLSchema, GraphQLNonNull } = graphql;
 const User = require('../users/models');
@@ -51,15 +51,13 @@ const Mutations = new GraphQLObjectType({
     },
 
     checkAuth: {
-        type: ResponseReturnType,
+        type: AuthReturnType,
         args: {
                 token: {type: GraphQLString},
         },
         resolve: (parent, args) => checkAuth(args.token)
     }
-
 }
-
 
 })
 const gqlSchema = new GraphQLSchema({

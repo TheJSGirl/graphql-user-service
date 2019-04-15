@@ -46,7 +46,9 @@ async function fetchUser(args) {
 }
 
 async function registerUser(args) {
+
     const result = await checkAuth(args.token);
+    console.log("result-----------", result)
     const {name, password, email, mobile, username, image } = args;
 
     const hashedPassword = await bcrypt.hashSync(password, config.HashSettings.SaltRounds);
